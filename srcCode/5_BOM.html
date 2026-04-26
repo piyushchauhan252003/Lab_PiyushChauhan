@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>BOM</title>
+</head>
+<body>
+
+<h2>BOM - Screen Information</h2>
+
+<button onclick="showScreenInfo()">Show Screen Info</button>
+
+<p id="result"></p>
+
+<script>
+function showScreenInfo() {
+    document.getElementById("result").innerHTML =
+        "Screen Width: " + screen.width + "<br>" +
+        "Screen Height: " + screen.height + "<br>" +
+        "Available Width: " + screen.availWidth + "<br>" +
+        "Available Height: " + screen.availHeight;
+}
+</script>
+
+</body>
+</html>

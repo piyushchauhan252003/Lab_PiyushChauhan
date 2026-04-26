@@ -1,0 +1,28 @@
+<html>
+<head>
+    <title>Mini Calculator</title>
+</head>
+
+<body>
+    <h2>Simple Calculator</h2>
+    <input type="number" id="num1" placeholder="Enter first no">
+    <input type="number" id="num2" placeholder="Enter second no">
+    <br><br>
+    <button onclick="add()">Add</button>
+    <button onclick="sub()">Subtract</button>
+    <p id="result"></p>
+
+    <!-- Internal JS -->
+    <script>
+        function sub() {
+            let a = document.getElementById("num1").value;
+            let b = document.getElementById("num2").value;
+
+            document.getElementById("result").innerHTML ="Result:"+(a - b);
+        }
+    </script>
+
+    <!-- External JS -->
+     <script src="script.js"></script>
+</body>
+</html>

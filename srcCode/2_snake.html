@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Snake & Ladder - Modern</title>
+
+<style>
+body{
+  margin:0;
+  font-family:Arial;
+  background:linear-gradient(120deg,#89f7fe,#66a6ff);
+  text-align:center;
+}
+
+h2{
+  color:#222;
+}
+
+#game{
+  margin-top:20px;
+}
+
+.board{
+  display:grid;
+  grid-template-columns:repeat(10,60px);
+  grid-template-rows:repeat(10,60px);
+  margin:auto;
+  border:4px solid #333;
+  border-radius:10px;
+  overflow:hidden;
+  position:relative;
+}
+
+.cell{
+  width:60px;
+  height:60px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:12px;
+  font-weight:bold;
+}
+
+.cell:nth-child(even){
+  background:#fdfdfd;
+}
+.cell:nth-child(odd){
+  background:#dff9fb;
+}
+
+.player{
+  width:30px;
+  height:30px;
+  background:#ff4757;
+  color:white;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:bold;
+  box-shadow:0 0 10px rgba(0,0,0,0.5);
+}
+
+#controls{
+  margin:15px;
+}
+
+button{
+  padding:10px 20px;
+  font-size:16px;
+  border:none;
+  border-radius:8px;
+  background:#2ed573;
+  color:white;
+  cursor:pointer;
+  transition:0.3s;
+}
+
+button:hover{
+  background:#1eae60;
+}
+
+#dice{
+  margin-top:10px;
+  font-size:18px;
+  font-weight:bold;
+}
+
+canvas{
+  position:absolute;
+  top:0;
+  left:50%;
+  transform:translateX(-50%);
+  pointer-events:none;
+}
+</style>
+
+</head>
+
+<body>
+
+<h2>🎲 Snake & Ladder Game</h2>
+
+<div id="controls">
+  <button onclick="rollDice()">Roll Dice</button>
+  <div id="dice">Dice: -</div>
+</div>
+
+<div style="position:relative; width:600px; margin:auto;">
+  <div class="board" id="board"></div>
+  <canvas id="canvas" width="600" height="600"></canvas>
+</div>
+
+<script>
+const board = document.getElementById("board");
+const canvas = document.getElementById("canvas");
+const ctx = canvas.getContext("2d");
+
+let pos = 1;
+
+const snakes = {16:6,47:26,49:11,87:24,93:73};
+const ladders = {2:23,8:34,20:77,32:68,41:79};
+
+function getXY(n){
+  let r = Math.floor((n-1)/10);
+  let c = (n-1)%10;
+  if(r%2===1) c = 9-c;
+  return {
+    x: c*60 + 30,
+    y: 570 - r*60
+  };
+}
+
+function drawSnakesLadders(){
+  ctx.clearRect(0,0,600,600);
+
+  // ladders
+  ctx.strokeStyle="green";
+  ctx.lineWidth=5;
+  for(let l in ladders){
+    let s = getXY(+l);
+    let e = getXY(ladders[l]);
+    ctx.beginPath();
+    ctx.moveTo(s.x,s.y);
+    ctx.lineTo(e.x,e.y);
+    ctx.stroke();
+  }
+
+  // snakes
+  ctx.strokeStyle="red";
+  for(let s in snakes){
+    let st = getXY(+s);
+    let en = getXY(snakes[s]);
+    ctx.beginPath();
+    ctx.moveTo(st.x,st.y);
+    ctx.lineTo(en.x,en.y);
+    ctx.stroke();
+  }
+}
+
+function drawBoard(){
+  board.innerHTML = "";
+
+  for(let i=100;i>=1;i--){
+    let d = document.createElement("div");
+    d.className="cell";
+
+    if(i===pos){
+      let p = document.createElement("div");
+      p.className="player";
+      p.innerText="P";
+      d.appendChild(p);
+    } else {
+      d.innerText = i;
+    }
+
+    board.appendChild(d);
+  }
+
+  drawSnakesLadders();
+}
+
+function rollDice(){
+  let dice = Math.floor(Math.random()*6)+1;
+  document.getElementById("dice").innerText = "Dice: " + dice;
+
+  if(pos + dice <= 100){
+    pos += dice;
+  }
+
+  if(snakes[pos]) pos = snakes[pos];
+  if(ladders[pos]) pos = ladders[pos];
+
+  if(pos === 100){
+    setTimeout(()=>alert("🎉 You Win!"),100);
+    pos = 1;
+  }
+
+  drawBoard();
+}
+
+drawBoard();
+</script>
+
+</body>
+</html>

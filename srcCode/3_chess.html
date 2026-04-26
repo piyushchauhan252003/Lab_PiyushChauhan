@@ -1,0 +1,120 @@
+<!--WAP to make a Chessboard game-->
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Real Chess Game</title>
+<style>
+body{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  height:100vh;
+  background:#222;
+}
+.board{
+  display:grid;
+  grid-template-columns:repeat(8,70px);
+  border:4px solid #000;
+}
+.cell{
+  width:70px;
+  height:70px;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  font-size:42px;
+  cursor:pointer;
+}
+.white{background:#f0d9b5;}
+.black{background:#b58863;}
+.selected{outline:4px solid red;}
+</style>
+</head>
+<body>
+
+<div class="board" id="board"></div>
+
+<script>
+const boardEl=document.getElementById("board");
+
+let turn="white";
+let selected=null;
+
+const board=[
+["♜","♞","♝","♛","♚","♝","♞","♜"],
+["♟","♟","♟","♟","♟","♟","♟","♟"],
+["","","","","","","",""],
+["","","","","","","",""],
+["","","","","","","",""],
+["","","","","","","",""],
+["♙","♙","♙","♙","♙","♙","♙","♙"],
+["♖","♘","♗","♕","♔","♗","♘","♖"]
+];
+
+function isWhite(p){return "♙♖♘♗♕♔".includes(p);}
+function isBlack(p){return "♟♜♞♝♛♚".includes(p);}
+
+function draw(){
+  boardEl.innerHTML="";
+  for(let r=0;r<8;r++){
+    for(let c=0;c<8;c++){
+      let d=document.createElement("div");
+      d.className="cell "+((r+c)%2==0?"white":"black");
+      d.textContent=board[r][c];
+      d.onclick=()=>clickCell(r,c,d);
+      boardEl.appendChild(d);
+    }
+  }
+}
+
+function clickCell(r,c,cell){
+  if(selected===null){
+    let p=board[r][c];
+    if(p==="")return;
+    if(turn==="white" && !isWhite(p))return;
+    if(turn==="black" && !isBlack(p))return;
+    selected={r,c};
+    cell.classList.add("selected");
+  }else{
+    if(isValidMove(selected.r,selected.c,r,c)){
+      board[r][c]=board[selected.r][selected.c];
+      board[selected.r][selected.c]="";
+      turn=turn==="white"?"black":"white";
+    }
+    selected=null;
+    draw();
+  }
+}
+
+function isValidMove(sr,sc,tr,tc){
+  let p=board[sr][sc];
+  let dr=tr-sr, dc=tc-sc;
+
+  if(board[tr][tc]!=="" &&
+    ((isWhite(p)&&isWhite(board[tr][tc]))||
+     (isBlack(p)&&isBlack(board[tr][tc]))))
+    return false;
+
+  if(p==="♙") return sc===tc && dr===-1 && board[tr][tc]==="";
+  if(p==="♟") return sc===tc && dr===1 && board[tr][tc]==="";
+
+  if("♖♜".includes(p)) return dr===0 || dc===0;
+
+  if("♗♝".includes(p)) return Math.abs(dr)===Math.abs(dc);
+
+  if("♕♛".includes(p)) return dr===0||dc===0||Math.abs(dr)===Math.abs(dc);
+
+  if("♘♞".includes(p))
+    return (Math.abs(dr)===2&&Math.abs(dc)===1)||(Math.abs(dr)===1&&Math.abs(dc)===2);
+
+  if("♔♚".includes(p))
+    return Math.abs(dr)<=1 && Math.abs(dc)<=1;
+
+  return false;
+}
+
+draw();
+</script>
+</body>
+</html>

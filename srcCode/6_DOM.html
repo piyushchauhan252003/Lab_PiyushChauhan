@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>DOM</title>
+</head>
+<body>
+
+<h2 id="heading">Enter Your Name</h2>
+
+<input type="text" id="name" placeholder="Type your name">
+<br><br>
+
+<button onclick="showName()">Submit</button>
+
+<p id="output"></p>
+
+<script>
+function showName() {
+
+    let userName = document.getElementById("name").value;
+
+    document.getElementById("output").innerHTML =
+        "Hello " + userName + "!";
+
+    let h = document.getElementsByTagName("h2");
+    h[0].style.color = "blue";
+}
+</script>
+
+</body>
+</html>
