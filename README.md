@@ -10,6 +10,5 @@ Program 4: Internal and external JS  implementation
 Program 5: BOM Objects
 Program 6: DOM Manipulation
 Program 7: Dynamic Web Page
-
 Author
 Piyush Chauhan
