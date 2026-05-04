@@ -5,19 +5,28 @@
 </head>
 <body>
 
-<h2>BOM - Screen Information</h2>
+<h2>BOM Information</h2>
 
-<button onclick="showScreenInfo()">Show Screen Info</button>
+<button onclick="showInfo()">Show Info</button>
 
 <p id="result"></p>
 
 <script>
-function showScreenInfo() {
+function showInfo() {
     document.getElementById("result").innerHTML =
-        "Screen Width: " + screen.width + "<br>" +
-        "Screen Height: " + screen.height + "<br>" +
-        "Available Width: " + screen.availWidth + "<br>" +
-        "Available Height: " + screen.availHeight;
+        "<b>Screen Info:</b><br>" +
+        "Width: " + screen.width + "<br>" +
+        "Height: " + screen.height + "<br><br>" +
+
+        "<b>Navigator Info:</b><br>" +
+        "Browser: " + navigator.appName + "<br>" +
+        "Platform: " + navigator.platform + "<br><br>" +
+
+        "<b>Window Info:</b><br>" +
+        "URL: " + window.location.href + "<br><br>" +
+
+        "<b>History Info:</b><br>" +
+        "History Length: " + history.length;
 }
 </script>
 
