@@ -7,25 +7,53 @@
 
 <h2>Even or Odd Checker</h2>
 
-<input type="number" id="num" placeholder="Enter number">
-<button onclick="check()">Check</button>
+<input type="number" id="num" placeholder="Enter number" onkeyup="liveCheck()">
+<br><br>
+
+<button onclick="check()" onmouseover="hoverEffect()">Check</button>
 
 <p id="output"></p>
 
 <script>
+
+// Event 1: onclick
 function check() {
     let n = document.getElementById("num").value;
 
     if (n == "") {
         document.getElementById("output").innerHTML = "Enter a number!";
     }
-    else if (n % 2 == 0) {
-        document.getElementById("output").innerHTML = n + " is Even";
-    }
     else {
-        document.getElementById("output").innerHTML = n + " is Odd";
+        n = Number(n);
+        let result = "";
+
+        // Loop
+        for (let i = 1; i <= n; i++) {
+            if (i % 2 == 0) {
+                result += i + " is Even<br>";
+            } else {
+                result += i + " is Odd<br>";
+            }
+        }
+
+        document.getElementById("output").innerHTML = result;
     }
 }
+
+// Event 2: onkeyup (live typing)
+function liveCheck() {
+    let n = document.getElementById("num").value;
+
+    if (n != "") {
+        document.getElementById("output").innerHTML = "Typing: " + n;
+    }
+}
+
+// Event 3: onmouseover (hover effect)
+function hoverEffect() {
+    document.getElementById("output").innerHTML = "Click to check Even/Odd!";
+}
+
 </script>
 
 </body>
